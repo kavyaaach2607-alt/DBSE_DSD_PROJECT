@@ -1,0 +1,85 @@
+{
+  "info": {
+    "name": "Inventory & Warehouse Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/register",
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"admin@example.com\",\n  \"password\": \"admin123\",\n  \"role\": \"admin\"\n}" }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"admin123\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        { "name": "Get All Products", "request": { "method": "GET", "url": "{{baseUrl}}/products", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+        { "name": "Create Product", "request": { "method": "POST", "url": "{{baseUrl}}/products", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"sku\": \"ELEC-003\",\n  \"name\": \"HDMI Cable\",\n  \"category_id\": 1,\n  \"supplier_id\": 1,\n  \"unit_price\": 299,\n  \"reorder_level\": 20,\n  \"reorder_quantity\": 80\n}" } } }
+      ]
+    },
+    {
+      "name": "Warehouses",
+      "item": [
+        { "name": "Get All Warehouses", "request": { "method": "GET", "url": "{{baseUrl}}/warehouses", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } }
+      ]
+    },
+    {
+      "name": "Suppliers",
+      "item": [
+        { "name": "Get All Suppliers", "request": { "method": "GET", "url": "{{baseUrl}}/suppliers", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "item": [
+        { "name": "Get Current Stock", "request": { "method": "GET", "url": "{{baseUrl}}/inventory", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+        { "name": "Get Low Stock", "request": { "method": "GET", "url": "{{baseUrl}}/inventory/low-stock", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+        { "name": "Get Active Alerts", "request": { "method": "GET", "url": "{{baseUrl}}/inventory/alerts", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        { "name": "Get All Transactions", "request": { "method": "GET", "url": "{{baseUrl}}/transactions", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+        { "name": "Record Stock IN", "request": { "method": "POST", "url": "{{baseUrl}}/transactions", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"product_id\": 1,\n  \"warehouse_id\": 1,\n  \"transaction_type\": \"IN\",\n  \"quantity\": 100,\n  \"reference_no\": \"PO-1001\",\n  \"notes\": \"Restock from supplier\"\n}" } } },
+        { "name": "Record Stock OUT", "request": { "method": "POST", "url": "{{baseUrl}}/transactions", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"product_id\": 1,\n  \"warehouse_id\": 1,\n  \"transaction_type\": \"OUT\",\n  \"quantity\": 15,\n  \"reference_no\": \"SO-2002\"\n}" } } },
+        { "name": "Transfer Between Warehouses", "request": { "method": "POST", "url": "{{baseUrl}}/transactions", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"product_id\": 1,\n  \"warehouse_id\": 1,\n  \"destination_warehouse_id\": 2,\n  \"transaction_type\": \"TRANSFER\",\n  \"quantity\": 20\n}" } } }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": [
+        { "name": "Warehouse Valuation", "request": { "method": "GET", "url": "{{baseUrl}}/reports/warehouse-valuation", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+        { "name": "Stock Summary", "request": { "method": "GET", "url": "{{baseUrl}}/reports/stock-summary", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+        { "name": "Transaction Summary (30d)", "request": { "method": "GET", "url": "{{baseUrl}}/reports/transaction-summary", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } }
+      ]
+    },
+    {
+      "name": "AI Forecast",
+      "item": [
+        { "name": "Reorder Recommendation", "request": { "method": "GET", "url": "{{baseUrl}}/forecast/reorder/1", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } }
+      ]
+    }
+  ]
+}
